@@ -166,12 +166,18 @@ LOGGING = {
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key-for-development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Disable automatic slash appending
 APPEND_SLASH = False
 
-ALLOWED_HOSTS = ['*']
+# 允许的主机
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.azurewebsites.net',  # 允许所有 Azure Web Apps 域名
+    os.getenv('WEBSITE_HOSTNAME', ''),  # Azure 提供的主机名
+]
 
 
 # Application definition
@@ -196,6 +202,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -210,7 +217,9 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, '..', 'frontend', 'build'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -288,10 +297,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 添加前端构建文件的路径
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '..', 'frontend', 'build', 'static'),
+]
+
+# 前端构建文件的根目录
+FRONTEND_BUILD_DIR = os.path.join(BASE_DIR, '..', 'frontend', 'build')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -312,7 +329,8 @@ REST_FRAMEWORK = {
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    'https://' + os.getenv('WEBSITE_HOSTNAME', ''),
+    'http://localhost:3000',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -375,6 +393,7 @@ FASTTEXT_LABEL_MAP = {
     2: "festival",
     3: "meeting schedule"
 }
+
 # Ensure logs directory exists
 if not os.path.exists(LOGS_DIR):
     os.makedirs(LOGS_DIR)
@@ -382,3 +401,6 @@ if not os.path.exists(LOGS_DIR):
 # 确保媒体目录存在
 if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
+
+# 配置 whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

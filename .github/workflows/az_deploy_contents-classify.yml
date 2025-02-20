@@ -14,11 +14,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install and build frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+          cd ..
+          
       - name: Set up Python version
         uses: actions/setup-python@v5
         with:
@@ -32,18 +44,33 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Collect static files
+        run: |
+          python backend/manage.py collectstatic --noinput
+          
+      # Optional: Add step to run tests here
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Create deployment package
+        run: |
+          # 创建部署包目录
+          mkdir deploy_package
+          # 复制必要文件
+          cp -r backend deploy_package/
+          cp -r frontend/build deploy_package/frontend_static
+          cp requirements.txt deploy_package/
+          cp .env deploy_package/
+          # 创建启动脚本
+          echo "gunicorn --chdir backend backend.wsgi:application --log-file -" > deploy_package/startup.sh
+          chmod +x deploy_package/startup.sh
+          # 打包
+          cd deploy_package
+          zip -r ../release.zip ./*
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,7 +87,6 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
       
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
