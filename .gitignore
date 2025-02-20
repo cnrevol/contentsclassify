@@ -1,0 +1,13 @@
+/venv
+/bert_cn
+/backend/media/email_files
+/backend/media/uploaded_files
+*.pyc
+.env
+/.cursor
+/.vscode
+devpromptmemo.md
+/fasttext
+tsmp.txt
+/outlookmail
+/backend/logs

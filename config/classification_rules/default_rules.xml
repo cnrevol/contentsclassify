@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classification_rules>
+    <rule>
+        <name>Financial Document</name>
+        <description>Identifies financial documents and reports</description>
+        <type>keyword</type>
+        <pattern>
+            <keywords>
+                <keyword>invoice</keyword>
+                <keyword>financial report</keyword>
+                <keyword>balance sheet</keyword>
+                <keyword>profit and loss</keyword>
+                <keyword>cash flow</keyword>
+                <keyword>bank statement</keyword>
+            </keywords>
+        </pattern>
+        <priority>1</priority>
+    </rule>
+    
+    <rule>
+        <name>Technical Document</name>
+        <description>Identifies technical documentation and specifications</description>
+        <type>keyword</type>
+        <pattern>
+            <keywords>
+                <keyword>technical specification</keyword>
+                <keyword>user manual</keyword>
+                <keyword>api documentation</keyword>
+                <keyword>system architecture</keyword>
+                <keyword>code review</keyword>
+            </keywords>
+        </pattern>
+        <priority>1</priority>
+    </rule>
+    
+    <rule>
+        <name>Legal Document</name>
+        <description>Identifies legal documents and contracts</description>
+        <type>keyword</type>
+        <pattern>
+            <keywords>
+                <keyword>contract</keyword>
+                <keyword>agreement</keyword>
+                <keyword>terms and conditions</keyword>
+                <keyword>legal notice</keyword>
+                <keyword>policy</keyword>
+                <keyword>compliance</keyword>
+            </keywords>
+        </pattern>
+        <priority>2</priority>
+    </rule>
+    
+    <rule>
+        <name>Marketing Material</name>
+        <description>Identifies marketing and promotional content</description>
+        <type>keyword</type>
+        <pattern>
+            <keywords>
+                <keyword>marketing</keyword>
+                <keyword>promotion</keyword>
+                <keyword>advertisement</keyword>
+                <keyword>campaign</keyword>
+                <keyword>brochure</keyword>
+                <keyword>sales</keyword>
+            </keywords>
+        </pattern>
+        <priority>1</priority>
+    </rule>
+    
+    <rule>
+        <name>Personal Communication</name>
+        <description>Identifies personal communications and messages</description>
+        <type>keyword</type>
+        <pattern>
+            <keywords>
+                <keyword>hello</keyword>
+                <keyword>hi</keyword>
+                <keyword>regards</keyword>
+                <keyword>sincerely</keyword>
+                <keyword>personal</keyword>
+                <keyword>private</keyword>
+            </keywords>
+        </pattern>
+        <priority>3</priority>
+    </rule>
+</classification_rules> 
