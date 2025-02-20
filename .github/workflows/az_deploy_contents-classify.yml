@@ -58,7 +58,6 @@ jobs:
           cp -r backend deploy_package/
           cp -r frontend/build deploy_package/frontend_static
           cp requirements.txt deploy_package/
-          cp .env deploy_package/
           # 创建启动脚本
           echo "gunicorn --chdir backend backend.wsgi:application --log-file -" > deploy_package/startup.sh
           chmod +x deploy_package/startup.sh
