@@ -8,7 +8,6 @@ import {
   DialogActions,
   TextField,
   Typography,
-  Paper,
   List,
   ListItem,
   IconButton,
