@@ -60,14 +60,14 @@ jobs:
           cp requirements.txt deploy_package/
           # 创建启动脚本
           echo '#!/bin/bash
-cd /home/site/wwwroot
-# source /antenv/bin/activate
+          cd /home/site/wwwroot
+          # source /antenv/bin/activate
 
-# 应用数据库迁移
-# python manage.py migrate
+          # 应用数据库迁移
+          # python manage.py migrate
 
-# 启动 Gunicorn
-gunicorn backend.wsgi:application --bind=0.0.0.0:8000 --log-file=-' > deploy_package/startup.sh
+          # 启动 Gunicorn
+          gunicorn backend.wsgi:application --bind=0.0.0.0:8000 --log-file=-' > deploy_package/startup.sh
           chmod +x deploy_package/startup.sh
           # 打包
           cd deploy_package
