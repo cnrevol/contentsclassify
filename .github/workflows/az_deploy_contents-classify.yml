@@ -54,12 +54,20 @@ jobs:
         run: |
           # 创建部署包目录
           mkdir deploy_package
-          # 复制必要文件
-          cp -r backend deploy_package/
-          cp -r frontend/build deploy_package/frontend_static
+          # 复制必要文件，确保文件在根目录下
+          cp -r backend/* deploy_package/
+          cp -r frontend/build/* deploy_package/static
           cp requirements.txt deploy_package/
           # 创建启动脚本
-          echo "gunicorn --chdir backend backend.wsgi:application --log-file -" > deploy_package/startup.sh
+          echo '#!/bin/bash
+cd /home/site/wwwroot
+# source /antenv/bin/activate
+
+# 应用数据库迁移
+# python manage.py migrate
+
+# 启动 Gunicorn
+gunicorn backend.wsgi:application --bind=0.0.0.0:8000 --log-file=-' > deploy_package/startup.sh
           chmod +x deploy_package/startup.sh
           # 打包
           cd deploy_package
