@@ -54,6 +54,7 @@ jobs:
         run: |
           # 创建部署包目录
           mkdir deploy_package
+          mkdir -p deploy_package/static
           # 复制必要文件，确保文件在根目录下
           cp -r backend/* deploy_package/
           cp -r frontend/build/* deploy_package/static
