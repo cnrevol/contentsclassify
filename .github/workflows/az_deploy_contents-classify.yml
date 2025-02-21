@@ -62,17 +62,18 @@ jobs:
           # 创建启动脚本
           echo '#!/bin/bash
           cd /home/site/wwwroot
-          # source /antenv/bin/activate
-
           # 应用数据库迁移
-          # python manage.py migrate
-
+          python backend/manage.py migrate
           # 启动 Gunicorn
           gunicorn backend.wsgi:application --bind=0.0.0.0:8000 --log-file=-' > deploy_package/startup.sh
           chmod +x deploy_package/startup.sh
           # 打包
           cd deploy_package
           zip -r ../release.zip ./*
+
+      - name: List deploy_package contents
+        run: |
+          ls -R deploy_package
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
