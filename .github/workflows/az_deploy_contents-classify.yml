@@ -103,3 +103,4 @@ jobs:
           app-name: 'contents-classify'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_566A37D6118F4CC58C0D7A3FF4D50153 }}
+          package: ./deploy_package
